@@ -4,7 +4,6 @@ const app = express();
 const path = require("node:path");
 const assetsPath = path.join(__dirname, "public");
 const indexRouter = require('./routes/index')
-const indexRouter = require("./routes/index");
 const carRouter = require("./routes/car");
 
 app.set("views", path.join(__dirname, "views"));
@@ -18,12 +17,12 @@ app.use("/", indexRouter);
 app.use("/category", carRouter);
 
 app.use((req, res, next) => {
-    res.status(404).render('errors/404');
+    res.status(404).render('partials/404');
   });
 
   app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).render('errors/500');
+    res.status(500).render('partials/500');
   });  
 
 const PORT = process.env.PORT || 3000;
