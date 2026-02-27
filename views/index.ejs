@@ -2,11 +2,37 @@
 <html>
 
 <head>
-    <title>Categories</title>
+    <title>Car Inventory</title>
+    <style>
+        form {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .edit-form,
+        #create-form {
+            display: none;
+            margin-left: 20px;
+        }
+
+        button {
+            margin-left: 5px;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Car Categories</h1>
+
+
+    <button id="show-create">Add New Category</button>
+
+    <form id="create-form" action="/" method="POST">
+        <input type="text" name="name" placeholder="Category Name" required>
+        <textarea name="description" placeholder="Description" required></textarea>
+        <button type="submit">Add</button>
+        <button type="button" onclick="toggleCreateForm(false)">Cancel</button>
+    </form>
 
     <ul>
         <% if (categories.length===0) { %>
@@ -14,7 +40,7 @@
             <% } %>
 
                 <% categories.forEach(category=> { %>
-                    <li>
+                    <li id="category-<%= category.id %>">
                         <strong>
                             <%= category.name %>
                         </strong>
@@ -22,13 +48,37 @@
                             <%= category.description %>
                         </p>
 
-                        <form action="/categories/delete/<%= category.id %>" method="POST">
+                        <button onclick="toggleEditForm(<%= category.id %>)">Edit</button>
+                        <form style="display:inline;" action="/<%= category.id %>/delete" method="POST">
                             <button type="submit">Delete</button>
+                        </form>
+
+                        <form class="edit-form" id="edit-form-<%= category.id %>" action="/<%= category.id %>/update"
+                            method="POST">
+                            <input type="text" name="name" value="<%= category.name %>" required>
+                            <textarea name="description"><%= category.description %></textarea>
+                            <button type="submit">Save</button>
+                            <button type="button" onclick="toggleEditForm(<%= category.id %>, false)">Cancel</button>
                         </form>
                     </li>
                     <% }) %>
     </ul>
 
+    <script>
+        const createForm = document.getElementById('create-form');
+        const showCreateBtn = document.getElementById('show-create');
+
+        function toggleCreateForm(show = true) {
+            createForm.style.display = show ? 'block' : 'none';
+        }
+
+        showCreateBtn.addEventListener('click', () => toggleCreateForm(true));
+
+        function toggleEditForm(id, show = true) {
+            const form = document.getElementById(`edit-form-${id}`);
+            form.style.display = show ? 'block' : 'none';
+        }
+    </script>
 </body>
 
 </html>

@@ -14,7 +14,6 @@ app.use(express.static(assetsPath));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/", indexRouter);
-app.use("/category", carRouter);
 
 app.use((req, res, next) => {
     res.status(404).render('partials/404');
