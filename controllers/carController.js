@@ -1,6 +1,6 @@
 const storage = require("../db/queries");
 
-const getCarsByCategory = async (req, res) => {
+const getCarsByCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -8,17 +8,16 @@ const getCarsByCategory = async (req, res) => {
     const cars = await storage.getCarsByCategoryId(id);
 
     if (!category) {
-      return res.status(404).send("Category not found");
+      return res.status(404).render("partials/404");
     }
 
     res.render("cars", { category, cars });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
+    next(err);
   }
 };
 
-const createCar = async (req, res) => {
+const createCar = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, description, brand, price } = req.body;
@@ -27,12 +26,11 @@ const createCar = async (req, res) => {
 
     res.redirect(`/category/${id}`);
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Server Error");
+    next(err);
   }
 };
 
-const deleteCar = async (req, res) => {
+const deleteCar = async (req, res, next) => {
     try {
       const { id } = req.params;
       const { category_id } = req.body;
@@ -41,12 +39,11 @@ const deleteCar = async (req, res) => {
   
       res.redirect(`/category/${category_id}`);
     } catch (err) {
-      console.error(err);
-      res.status(500).send("Server Error");
+      next(err);
     }
   };
 
-const updateCar = async (req, res) => {
+const updateCar = async (req, res, next) => {
     try {
       const { id } = req.params;
       const { name, description, brand, price, category_id } = req.body;
@@ -55,8 +52,7 @@ const updateCar = async (req, res) => {
   
       res.redirect(`/category/${category_id}`);
     } catch (err) {
-      console.error(err);
-      res.status(500).send("Server Error");
+      next(err);
     }
   };
 
