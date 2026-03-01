@@ -48,3 +48,5 @@ Database: PostgreSQL
 Templating Engine: EJS
 Styling: CSS
 Deployment: Railway
+
+Live Link: https://car-inventory-production-4bff.up.railway.app/
